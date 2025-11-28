@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login Page</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body
+    class="bg-light d-flex justify-content-center align-items-center vh-100"
+  >
+    <div class="card shadow-lg p-4" style="width: 380px">
+      <h3 class="text-center mb-4 text-primary">Login</h3>
+
+      <form>
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter your email"
+            id="username"
+          />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            placeholder="Enter password"
+            
+            id="userpass"
+          />
+        </div>
+        <button class="btn btn-primary w-100 mb-2">Login</button>
+
+        <a href="forgot.html" class="d-block text-center text-decoration-none"
+          >Forgot Password?</a
+        >
+        <p class="text-center mt-3">
+          Don’t have an account? <a href="register.html">Register</a>
+        </p>
+      </form>
+    </div>
+
+    <script>
+      // login
+      const form = document.querySelector("form");
+      const username = document.querySelector("#username");
+      const userpass = document.querySelector("#userpass");
+
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+       
+
+        fetch("https://dummyjson.com/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            username: username.value,
+            password: userpass.value
+          })
+        })
+          .then((res) => res.json())
+          .then((data)=>{
+            if(data.message){
+              alert(data.message);
+            }
+            if(data.accessToken){
+              localStorage.setItem("token", data.accessToken);
+              localStorage.setItem("user", JSON.stringify(data));
+              window.location.href = "profile.html";
+            }
+            
+          });
+      });
+    </script>
+  </body>
+</html>
